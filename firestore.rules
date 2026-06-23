@@ -1,0 +1,56 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    match /users/{userId} {
+      // Permite leer y escribir el propio perfil.
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    match /projects/{projectId} {
+      // Permite crear si está autenticado
+      allow create: if isAuthenticated();
+      // Permite leer si está autenticado (para soportar listados)
+      allow read: if isAuthenticated();
+      // Actualizar y borrar solo si es miembro
+      allow update, delete: if isAuthenticated() && (request.auth.uid in resource.data.members);
+      
+      // Subcolecciones dentro de proyectos (tareas, tablas, logs, etc.)
+      match /{allSubcollections=**} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+    
+    // Herramientas globales vinculadas por projectId
+    // Simplificamos a isAuthenticated() para permitir listados rápidos
+    
+    match /brainstormSessions/{id} {
+      allow read, write: if isAuthenticated();
+      match /ideas/{ideaId} { allow read, write: if isAuthenticated(); }
+    }
+    
+    match /mindMaps/{id} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /codiumPrograms/{id} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /webGeniusPages/{id} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /presentations/{id} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /sketches/{id} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

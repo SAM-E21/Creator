@@ -1,0 +1,62 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 8%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 3.7% 8%;
+    --muted-foreground: 240 5% 70%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 3.7% 15%;
+    --input: 240 3.7% 15%;
+    --ring: 263.4 70% 50.4%;
+    --radius: 0.5rem;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground selection:bg-primary/40 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fadeIn { 
+        animation: fadeIn 0.3s ease-out forwards; 
+    }
+
+    .glass-card {
+        @apply bg-card/60 backdrop-blur-xl border-white/10 shadow-2xl;
+    }
+    
+    .high-contrast-text {
+        @apply text-white font-bold tracking-tight;
+    }
+
+    .glow-primary {
+        box-shadow: 0 0 25px -5px hsl(var(--primary) / 0.6);
+    }
+}
